@@ -12,7 +12,10 @@ export const signin = async (req, res) => {
         .status(404)
         .json({ message: `No user with the email ${email}` });
 
-    const correctPassword = bcrypt.compare(password, alreadyUser.password);
+    const correctPassword = await bcrypt.compare(
+      password,
+      alreadyUser.password
+    );
     if (!correctPassword)
       return res.status(404).json({ message: "The password is incorrect" });
 
@@ -25,13 +28,23 @@ export const signin = async (req, res) => {
   }
 };
 
-export const signup = (req, res) => {
-  const {
-    firstname,
-    lastname,
-    email,
-    city,
-    password,
-    confirmPassword,
-  } = req.body;
+export const signup = async (req, res) => {
+  const { firstname, lastname, email, city, password } = req.body;
+  try {
+    const alreadyUser = await Users.findOne({ email });
+    if (alreadyUser)
+      return res
+        .status(404)
+        .json({ message: `User with the ${email} already exists` });
+    const hashed = await bcrypt.hash(password, 12);
+    const name = `${firstname} ${lastname}`;
+    const result = await Users.create({ name, city, email, password: hashed });
+    const token = jwt.sign({ email: result.email, id: result._id }, secretKey, {
+      expiresIn: "1h",
+    });
+    res.status(201).json({ result, token });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+    console.log("Error is : " + error);
+  }
 };
