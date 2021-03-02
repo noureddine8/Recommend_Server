@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Users from "../models/users.js";
 import { secretKey } from "../config.js";
@@ -6,7 +6,7 @@ import { secretKey } from "../config.js";
 export const signin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const alreadyUser = await Users.find({ email });
+    const alreadyUser = await Users.findOne({ email });
     if (!alreadyUser)
       return res
         .status(404)
@@ -25,6 +25,7 @@ export const signin = async (req, res) => {
     res.status(200).json({ user: alreadyUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
+    console.log("error is : ", error);
   }
 };
 
