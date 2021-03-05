@@ -5,8 +5,9 @@ const recommendationsModel = Schema(
   {
     title: { type: String, required: true },
     region: { type: String, required: true },
-    createdBy: { type: String, required: true }, //Eamil of the user
-    season: {
+    userId: { type: String, required: true },
+    userEmail: { type: String, required: true }, //Eamil of the user
+    /* season: {
       type: String,
       enum: ["winter", "spring", "summer", "autumn", "Not precised"],
       default: "Not precised",
@@ -16,7 +17,7 @@ const recommendationsModel = Schema(
       enum: ["Mountainous", "Coastal", "Urban", "Others"],
       default: "Others",
     },
-    description: { type: String, required: true },
+    description: { type: String, required: true },*/
   },
   { timestamps: true }
 );
