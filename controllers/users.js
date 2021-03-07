@@ -22,7 +22,7 @@ export const signin = async (req, res) => {
     const token = jwt.sign({ email, id: alreadyUser._id }, secretKey, {
       expiresIn: "1h",
     });
-    res.status(200).json({ user: alreadyUser, token, id: req.headers });
+    res.status(200).json({ user: alreadyUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
     console.log("error is : ", error);
@@ -30,7 +30,7 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  const { firstname, lastname, email, city, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
   try {
     const alreadyUser = await Users.findOne({ email });
     if (alreadyUser)
@@ -39,7 +39,7 @@ export const signup = async (req, res) => {
         .json({ message: `User with the ${email} already exists` });
     const hashed = await bcrypt.hash(password, 12);
     const name = `${firstname} ${lastname}`;
-    const result = await Users.create({ name, city, email, password: hashed });
+    const result = await Users.create({ name, email, password: hashed });
     const token = jwt.sign({ email: result.email, id: result._id }, secretKey, {
       expiresIn: "1h",
     });
