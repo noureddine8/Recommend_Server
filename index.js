@@ -15,13 +15,12 @@ app.use("/recommendations", recommendRouter);
 
 const port = process.env.PORT || 5000;
 
-mongoose.connect(
-  uri,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
     console.log("Connected to database successfully");
-    app.listen(port, "localhost", () => {
-      console.log(`Server listening on port ${port}`);
-    });
-  }
-);
+    app.listen(port, "localhost", () =>
+      console.log(`Server Running on Port: http://localhost:${port}`)
+    );
+  })
+  .catch((error) => console.log(`${error} did not connect`));
