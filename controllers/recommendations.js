@@ -14,7 +14,6 @@ export const postRecommendations = async (req, res) => {
   try {
     const result = await Recommendation.create({
       ...body,
-      userEmail: req.userEmail,
       userId: req.userId,
     });
     res.status(201).json({ result });

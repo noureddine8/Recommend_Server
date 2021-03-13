@@ -1,15 +1,14 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Users from "../models/users.js";
-import { secretKey } from "../config.js";
-
+import config from "config";
 export const signin = async (req, res) => {
   const { email, password } = req.body;
   try {
     const alreadyUser = await Users.findOne({ email });
     if (!alreadyUser)
       return res
-        .status(404)
+        .status(400)
         .json({ message: `No user with the email ${email}` });
 
     const correctPassword = await bcrypt.compare(
@@ -17,11 +16,12 @@ export const signin = async (req, res) => {
       alreadyUser.password
     );
     if (!correctPassword)
-      return res.status(404).json({ message: "The password is incorrect" });
+      return res.status(400).json({ message: "The password is incorrect" });
 
-    const token = jwt.sign({ email, id: alreadyUser._id }, secretKey, {
+    const token = jwt.sign({ id: alreadyUser._id }, config.get("secretKey"), {
       expiresIn: "1h",
     });
+
     res.status(200).json({ user: alreadyUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
@@ -35,17 +35,28 @@ export const signup = async (req, res) => {
     const alreadyUser = await Users.findOne({ email });
     if (alreadyUser)
       return res
-        .status(404)
+        .status(400)
         .json({ message: `User with the ${email} already exists` });
     const hashed = await bcrypt.hash(password, 12);
     const name = `${firstname} ${lastname}`;
-    const result = await Users.create({ name, email, password: hashed });
-    const token = jwt.sign({ email: result.email, id: result._id }, secretKey, {
+    const createdUser = await Users.create({ name, email, password: hashed });
+    const token = jwt.sign({ id: createdUser._id }, config.get("secretKey"), {
       expiresIn: "1h",
     });
-    res.status(201).json({ user: result, token, token });
+    res.status(201).json({ user: createdUser._id, token, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     console.log("Error is : " + error);
+  }
+};
+
+export const getUser = async (req, res) => {
+  const id = req.userId;
+  try {
+    const user = await Users.findById(id).select("-password");
+    res.status(200).json({ user });
+  } catch (error) {
+    console.log("err : ", error);
+    res.status(201).json({ message: "Something happened" });
   }
 };

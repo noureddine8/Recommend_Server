@@ -1,12 +1,11 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import { uri } from "./config.js";
 import userRouter from "./routes/users.js";
 import recommendRouter from "./routes/recommendations.js";
+import config from "config";
 
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 
@@ -16,7 +15,11 @@ app.use("/recommendations", recommendRouter);
 const port = process.env.PORT || 5000;
 
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(config.get("uri"), {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
   .then(() => {
     console.log("Connected to database successfully");
     app.listen(port, "localhost", () =>
