@@ -19,10 +19,10 @@ export const signin = async (req, res) => {
       return res.status(400).json({ message: "The password is incorrect" });
 
     const token = jwt.sign({ id: alreadyUser._id }, config.get("secretKey"), {
-      expiresIn: "1h",
+      expiresIn: "36000",
     });
 
-    res.status(200).json({ user: alreadyUser, token });
+    res.status(200).json({ message: "You are now signed in", token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong." });
     console.log("error is : ", error);
@@ -43,7 +43,7 @@ export const signup = async (req, res) => {
     const token = jwt.sign({ id: createdUser._id }, config.get("secretKey"), {
       expiresIn: "1h",
     });
-    res.status(201).json({ user: createdUser._id, token, token });
+    res.status(201).json({ message: "Registration done successfully", token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     console.log("Error is : " + error);
@@ -57,6 +57,6 @@ export const getUser = async (req, res) => {
     res.status(200).json({ user });
   } catch (error) {
     console.log("err : ", error);
-    res.status(201).json({ message: "Something happened" });
+    res.status(201).json({ message: "Couldn't load the user" });
   }
 };

@@ -3,7 +3,8 @@ import config from "config";
 
 export const auth = (req, res, next) => {
   const authorization = req.headers.authorization;
-  if (!authorization) res.status(401).json({ message: "No Authorization " });
+  if (!authorization)
+    return res.status(401).json({ message: "No Authorization " });
   const token = authorization.split(" ")[1];
   let decoded;
   if (!token) res.status(401).json({ message: "No token" });
