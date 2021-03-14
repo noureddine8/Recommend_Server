@@ -1,9 +1,27 @@
 import mongoose from "mongoose";
 
 const { Schema, model } = mongoose;
+export const genres = [
+  "action",
+  "drama",
+  "romance",
+  "sci-fi",
+  "horror",
+  "comedy",
+  "war",
+  "adventure",
+  "sports",
+  "documentary",
+];
 const recommendationsModel = Schema(
   {
     title: { type: String, required: true },
+    type: { type: String, required: true, enum: ["movie", "series"] },
+    genre: {
+      type: String,
+      required: true,
+      enum: genres,
+    },
     userId: { type: String, required: true },
   },
   { timestamps: true }

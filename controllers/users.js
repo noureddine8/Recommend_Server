@@ -19,7 +19,7 @@ export const signin = async (req, res) => {
       return res.status(400).json({ message: "The password is incorrect" });
 
     const token = jwt.sign({ id: alreadyUser._id }, config.get("secretKey"), {
-      expiresIn: "36000",
+      expiresIn: "1h",
     });
 
     res.status(200).json({ message: "You are now signed in", token });
