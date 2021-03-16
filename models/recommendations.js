@@ -22,6 +22,7 @@ const recommendationsModel = Schema(
       required: true,
       enum: genres,
     },
+    imgUrl: { type: String, required: true },
     userId: { type: String, required: true },
   },
   { timestamps: true }

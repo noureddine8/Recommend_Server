@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Recommendation, { genres } from "../models/recommendations.js";
 
 export const getRecommendations = async (req, res) => {
@@ -53,6 +54,17 @@ export const getRecommendationByuserId = async (req, res) => {
   try {
     const rec = await Recommendation.find({ userId });
     res.status(200).json({ rec });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const deleteRecById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await Recommendation.findByIdAndDelete(id);
+
+    res.json({ result, message: "Recommendation deleted successfully." });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

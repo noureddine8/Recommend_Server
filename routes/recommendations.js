@@ -5,6 +5,7 @@ import {
   getRecommendationByGenre,
   getRecommendationByType,
   getRecommendationByuserId,
+  deleteRecById,
 } from "../controllers/recommendations.js";
 import auth from "../middlewares/auth.js";
 
@@ -16,5 +17,6 @@ router.post("/", auth, postRecommendations);
 router.get("/genre/:genre", getRecommendationByGenre);
 router.get("/type/:type", getRecommendationByType);
 router.get("/:userId", auth, getRecommendationByuserId);
+router.delete("/:id", auth, deleteRecById);
 
 export default router;
