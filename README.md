@@ -6,5 +6,5 @@ The client side can be found => https://github.com/noureddine8/Recommend_Client.
 In the project directory:
 
 ### `npm start`
-Starts a local development server
+Starts a local development server. \
 Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
