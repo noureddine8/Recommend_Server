@@ -22,6 +22,8 @@ const recommendationsModel = Schema(
       required: true,
       enum: genres,
     },
+    shortDesc: { type: String, required: true },
+    longDesc: { type: String, required: true },
     imgUrl: { type: String, required: true },
     userId: { type: String, required: true },
   },
