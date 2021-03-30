@@ -60,3 +60,14 @@ export const getUser = async (req, res) => {
     res.status(201).json({ message: "Couldn't load the user" });
   }
 };
+
+export const getUserById = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await Users.findById(id).select("-password");
+    res.status(200).json({ user });
+  } catch (error) {
+    console.log("err : ", error.message);
+    res.status(201).json({ message: "Couldn't load the user" });
+  }
+};
