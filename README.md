@@ -1,7 +1,11 @@
 # Recommend_Server
 This is the server-side of the "M.E.R.N" stack, Movies and Tv Series application. \
-The client side can be found => https://github.com/noureddine8/Recommend_Client.
-
+The client side can be found =>[Front-end](https://github.com/noureddine8/Recommend_Client)
+## Key tasks
+* Developping the node.js app using Express.js framework
+* Storing the data using Mongodb
+* Modeling the data using mongoose
+* Implementing authentication using json web token(jwt)
 ## Available Scripts
 In the project directory:
 
